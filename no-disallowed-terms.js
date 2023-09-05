@@ -46,7 +46,6 @@ module.exports = {
             node.id.name.toLowerCase().includes(banWord.toLowerCase())
           );
           if (node.id.type === "Identifier" && banWorldFounded?.length) {
-            // if (node.init && node.init.type === "Literal" && node.init.value !== "bar") {
             context.report({
               node,
               message: formatMessage(message, banWorldFounded),
@@ -54,11 +53,10 @@ module.exports = {
               fix(fixer) {
                 return fixer.replaceText(
                   node.id,
-                  node.id.name.replace(banWorldFounded[0], fixTo)
+                  node.id.name.replace(banWorldFounded, fixTo)
                 );
               },
             });
-            // }
           }
         }
       },

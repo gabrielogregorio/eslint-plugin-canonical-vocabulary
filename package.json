@@ -1,21 +1,17 @@
 {
-    "name": "eslint-plugin-no-disallowed-terms",
-    "version": "1.0.0",
-    "description": "",
-    "keywords": [
-      "eslint",
-      "eslintplugin",
-      "eslint-plugin"
-    ],
-    "peerDependencies": {
+  "name": "eslint-plugin-no-disallowed-terms",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [ "eslint", "eslintplugin", "eslint-plugin"],
+  "scripts": {
+      "test": "node tests/enforce-foo-bar.test.js"  
+  },
+  "devDependencies": {
+      "eslint": "^8.48.0"
+  },
+  "peerDependencies": {
       "eslint": ">=8.0.0"
-    },
-    "scripts": {
-      "test": "node enforce-foo-bar.test.js"
-    },
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-      "eslint": "^8.36.0"
-    }
   }
+}

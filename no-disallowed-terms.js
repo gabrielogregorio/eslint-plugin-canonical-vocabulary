@@ -1,3 +1,33 @@
+const formatMessage = (messageLocal, word, fixTo) => {
+  return messageLocal.replace("<word>", word).replace("<fixTo>", fixTo);
+};
+
+const sendReport = (context, node, message, banWorld, fixTo) => {
+  context.report({
+    node,
+    message: formatMessage(message, banWorld, fixTo),
+    fix(fixer) {
+      return fixer.replaceText(node.id, node.id.name.replace(banWorld, fixTo));
+    },
+  });
+};
+
+const findInvalidName = (options, nameVar, context, node) => {
+  options.forEach((option) => {
+    const banWorlds = option.words;
+    const fixTo = option.fixTo;
+    const message = option.message;
+
+    const banWorldFounded = banWorlds.find((banWord) =>
+      nameVar.toLowerCase().includes(banWord.toLowerCase())
+    );
+
+    if (banWorldFounded) {
+      sendReport(context, node, message, banWorldFounded, fixTo);
+    }
+  });
+};
+
 module.exports = {
   meta: {
     type: "problem",
@@ -31,34 +61,28 @@ module.exports = {
     ],
   },
   create(context) {
-    let banWorlds = context.options[0][0].words; // FIX TO USE LIST
-    let fixTo = context.options[0][0].fixTo; // FIX TO USE LIST
-    let message = context.options[0][0].message; // FIX TO USE LIST
-
-    const formatMessage = (messageLocal, word) => {
-      return messageLocal.replace("<word>", word).replace("<fixTo>", fixTo);
-    };
+    let options = context.options[0];
 
     return {
       VariableDeclarator(node) {
         if (["const", "let", "var"].includes(node.parent.kind)) {
-          const banWorldFounded = banWorlds.find((banWord) =>
-            node.id.name.toLowerCase().includes(banWord.toLowerCase())
-          );
-          if (node.id.type === "Identifier" && banWorldFounded?.length) {
-            context.report({
-              node,
-              message: formatMessage(message, banWorldFounded),
+          const nameVar = node.id.name;
+          const identifierType = node.id.type;
 
-              fix(fixer) {
-                return fixer.replaceText(
-                  node.id,
-                  node.id.name.replace(banWorldFounded, fixTo)
-                );
-              },
-            });
+          if (identifierType === "Identifier") {
+            findInvalidName(options, nameVar, context, node);
           }
         }
+      },
+
+      ClassDeclaration(node) {
+        const nameVar = node.id.name;
+        findInvalidName(options, nameVar, context, node);
+      },
+
+      FunctionDeclaration(node) {
+        const nameVar = node.id.name;
+        findInvalidName(options, nameVar, context, node);
       },
     };
   },

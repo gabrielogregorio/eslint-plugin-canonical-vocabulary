@@ -5,6 +5,12 @@ const formatToSimpleStrings = (frase: string): string => {
 export const stringsAreEquivalentRegardlessOfConvention = (
   pharse: string,
   word: string
-): boolean => {
-  return formatToSimpleStrings(pharse).includes(formatToSimpleStrings(word));
+): { equivalent: boolean; isInStart: boolean } => {
+  const pharseFormated = formatToSimpleStrings(pharse);
+  const wordFormatted = formatToSimpleStrings(word);
+
+  return {
+    isInStart: pharseFormated.startsWith(wordFormatted),
+    equivalent: pharseFormated.includes(wordFormatted),
+  };
 };

@@ -98,24 +98,28 @@ describe("handler check cases", () => {
 
 describe("handler check cases", () => {
   it("convert to any case to camel case", () => {
+    expect(handlerCases.toCamelCase("snakeCase")).toEqual("snakeCase");
     expect(handlerCases.toCamelCase("snake_case")).toEqual("snakeCase");
     expect(handlerCases.toCamelCase("SNAKE_CASE")).toEqual("snakeCase");
     expect(handlerCases.toCamelCase("SnakeCase")).toEqual("snakeCase");
   });
 
   it("convert to any case to pascal case", () => {
+    expect(handlerCases.toPascalCase("SnakeCase")).toEqual("SnakeCase");
     expect(handlerCases.toPascalCase("snake_case")).toEqual("SnakeCase");
     expect(handlerCases.toPascalCase("SNAKE_CASE")).toEqual("SnakeCase");
     expect(handlerCases.toPascalCase("snakeCase")).toEqual("SnakeCase");
   });
 
   it("convert to any case to toSnakeCase", () => {
+    expect(handlerCases.toSnakeCase("snake_case")).toEqual("snake_case");
     expect(handlerCases.toSnakeCase("SnakeCase")).toEqual("snake_case");
     expect(handlerCases.toSnakeCase("SNAKE_CASE")).toEqual("snake_case");
     expect(handlerCases.toSnakeCase("snakeCase")).toEqual("snake_case");
   });
 
   it("convert to any case to toUpperSnakeCase", () => {
+    expect(handlerCases.toUpperSnakeCase("SNAKE_CASE")).toEqual("SNAKE_CASE");
     expect(handlerCases.toUpperSnakeCase("SnakeCase")).toEqual("SNAKE_CASE");
     expect(handlerCases.toUpperSnakeCase("snake_case")).toEqual("SNAKE_CASE");
     expect(handlerCases.toUpperSnakeCase("snakeCase")).toEqual("SNAKE_CASE");

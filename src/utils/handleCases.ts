@@ -52,6 +52,10 @@ export const handlerCases = {
   },
 
   toUpperSnakeCase: (text: string): string => {
+    if (handlerCases.isUpperSnakeCase(text)) {
+      return text;
+    }
+
     let result = text.replace(/([A-Z])/g, "_$1");
 
     result = result.toUpperCase();

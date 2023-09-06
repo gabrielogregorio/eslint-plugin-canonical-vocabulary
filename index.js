@@ -1,4 +1,4 @@
-const fooBarRule = require("./no-disallowed-terms");
+const fooBarRule = require("./rules/no-disallowed-terms");
 
 const plugin = { rules: { "no-disallowed-terms": fooBarRule } };
 

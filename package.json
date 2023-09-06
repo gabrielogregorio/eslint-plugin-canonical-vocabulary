@@ -6,7 +6,7 @@
   "license": "ISC",
   "keywords": [ "eslint", "eslintplugin", "eslint-plugin"],
   "scripts": {
-      "test": "node tests/enforce-foo-bar.test.js",
+      "test": "node rules/no-disallowed-terms.spec.js",
       "prepare": "husky install"
   },
   "devDependencies": {

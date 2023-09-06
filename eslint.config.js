@@ -1,4 +1,4 @@
-const eslintPluginExample = require("./eslint-plugin-example");
+const eslintPluginExample = require("./index");
 
 module.exports = [
   {

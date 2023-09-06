@@ -1,5 +1,5 @@
 const { RuleTester } = require("eslint");
-const noDisallowedTermsRule = require("../no-disallowed-terms");
+const noDisallowedTermsRule = require("./no-disallowed-terms");
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2015 },

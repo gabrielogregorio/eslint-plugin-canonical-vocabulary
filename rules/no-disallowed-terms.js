@@ -32,7 +32,8 @@ module.exports = {
   meta: {
     type: "problem",
     docs: {
-      description: "Padroniza escrita de valores",
+      description:
+        "Padroniza escrita de código, banindo e recomendando certos padrões",
     },
     fixable: "code",
     schema: [

@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-canonical-vocabulary",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "test": "ts-node src/rules/canonical-vocabulary.spec.ts",
-    "build": "tsc && tsc-alias",
+    "build": "tsc",
     "jest": "jest  --passWithNoTests",
     "jest:watch": "jest  --watchAll",
     "prepare": "husky install"

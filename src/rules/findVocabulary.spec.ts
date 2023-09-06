@@ -1,13 +1,4 @@
-const formatToSimpleStrings = (frase: string): string => {
-  return frase.replace(/_/g, "").toLowerCase().trim();
-};
-
-const stringsAreEquivalentRegardlessOfConvention = (
-  pharse: string,
-  word: string
-): boolean => {
-  return formatToSimpleStrings(pharse).includes(formatToSimpleStrings(word));
-};
+import { stringsAreEquivalentRegardlessOfConvention } from "./stringsAreEquivalentRegardlessOfConvention";
 
 describe("stringsAreEquivalentRegardlessOfConvention", () => {
   it("should check that regardless of convention, the strings are equivalent 1", () => {

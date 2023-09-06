@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-canonical-vocabulary",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "author": "",
   "license": "ISC",
@@ -16,7 +16,6 @@
     "jest": "jest  --passWithNoTests",
     "jest:watch": "jest  --watchAll",
     "prepare": "husky install"
-
   },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",

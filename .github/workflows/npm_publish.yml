@@ -1,4 +1,4 @@
-name: wait actions and publish to NPM
+name: publish to NPM
 
 on:
   push:

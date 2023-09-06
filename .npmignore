@@ -8,3 +8,5 @@ commitlint.config
 commitlint.config.js
 eslint.config
 tsconfig.json
+babel.config.js
+jest.config.js

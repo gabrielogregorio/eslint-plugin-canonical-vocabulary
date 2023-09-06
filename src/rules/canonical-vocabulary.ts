@@ -1,3 +1,6 @@
+import { fixBasedInCase } from "../utils/fixBasedInCase";
+import { stringsAreEquivalentRegardlessOfConvention } from "../utils/stringsAreEquivalentRegardlessOfConvention";
+
 interface RuleOption {
   message: string;
   fixTo: string;
@@ -9,7 +12,7 @@ const formatMessage = (
   word: string,
   fixTo: string
 ): string => {
-  return messageLocal.replace("<word>", word).replace("<fixTo>", fixTo);
+  return messageLocal.replace(/<word>/g, word).replace(/<fixTo>/g, fixTo);
 };
 
 const sendReport = (
@@ -23,13 +26,17 @@ const sendReport = (
   node: { id: { name: string } },
   message: string,
   banWorld: string,
+  fixToRef: string,
   fixTo: string
 ) => {
   context.report({
     node,
-    message: formatMessage(message, banWorld, fixTo),
+    message: formatMessage(message, banWorld, fixToRef),
     fix(fixer) {
-      return fixer.replaceText(node.id, node.id.name.replace(banWorld, fixTo));
+      return fixer.replaceText(
+        node.id,
+        node.id.name.replace(node.id.name, fixTo)
+      );
     },
   });
 };
@@ -45,12 +52,32 @@ const findInvalidName = (
     const fixTo = option.fixTo;
     const message = option.message;
 
-    const banWorldFounded = banWorlds.find((banWord: string) =>
-      nameVar.toLowerCase().includes(banWord.toLowerCase())
-    );
+    let isInStart = false;
+
+    const banWorldFounded = banWorlds.find((banWord: string) => {
+      const response = stringsAreEquivalentRegardlessOfConvention(
+        nameVar,
+        banWord
+      );
+      isInStart = response.isInStart;
+      return response.equivalent;
+    });
 
     if (banWorldFounded) {
-      sendReport(context, node, message, banWorldFounded, fixTo);
+      const fixToBasedInCase = fixBasedInCase(
+        nameVar,
+        banWorldFounded,
+        fixTo,
+        isInStart
+      );
+      sendReport(
+        context,
+        node,
+        message,
+        banWorldFounded,
+        fixTo,
+        fixToBasedInCase
+      );
     }
   });
 };

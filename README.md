@@ -20,9 +20,6 @@ pnpm i --save-dev eslint-plugin-canonical-vocabulary
 
 ```js
 {
-  //... other eslint config
-
-  // include plugin
   "plugins": ["canonical-vocabulary"],
 
   // Define your canonical vocabulary rules. Provide motivations for the suggestions and specify alternatives.
@@ -33,20 +30,18 @@ pnpm i --save-dev eslint-plugin-canonical-vocabulary
         {
           "words": ["MoneyHolder", "RiverSide", "SavingsPlace"],
           "fixTo": "FinancialInstitution",
-          "message": "Avoid using '<word>'. Instead, opt for '<fixTo>' due to specific reasons.'"
+          "message": "Avoid using '<word>'. Instead, opt by bla bla bla"
         },
         {
           "words": ["TreeSkin", "CanineCall", "TimberCover"],
           "fixTo": "DogSound",
-          "message": "Do not use '<word>'. '<word>' is not recommended; use '<fixTo>' instead."
+          "message": "Do not use '<word>', use '<fixTo>' instead."
         }
       ]
     ]
-
-    //... other rules
   },
 
-    // Apply different configurations for specific files or folders.
+    // if need, apply different configurations for specific files or folders.
    "overrides": [
     {
       "files": ["*external_context\\/*", "*\\.spec.ts"],
@@ -54,10 +49,7 @@ pnpm i --save-dev eslint-plugin-canonical-vocabulary
         "canonical-vocabulary/canonical-vocabulary": "off",
       }
     },
-    //... other of overrides
   ]
-  //... other eslint config
-
 }
 ```
 

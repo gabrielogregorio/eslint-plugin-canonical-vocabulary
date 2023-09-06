@@ -106,5 +106,3 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
     },
   ],
 });
-
-console.log("All tests passed!");

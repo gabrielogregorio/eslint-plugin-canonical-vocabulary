@@ -17,6 +17,11 @@ const ruleOptions = [
       fixTo: "IYes",
       message: "not use '<word>' use '<fixTo>'",
     },
+    {
+      words: ["IItems"],
+      fixTo: "INew",
+      message: "not use '<word>', '<word>' use '<fixTo>'",
+    },
   ],
 ];
 
@@ -104,7 +109,35 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
         },
       ],
     },
+    {
+      code: "function IItems () {}",
+      output: "function INew () {}",
+      options: ruleOptions,
+      errors: [
+        {
+          message: "not use 'IItems', 'IItems' use 'INew'",
+        },
+      ],
+    },
+    {
+      code: "function extra_i_items_extra () {}",
+      output: "function extra_i_new_extra () {}",
+      options: ruleOptions,
+      errors: [
+        {
+          message: "not use 'IItems', 'IItems' use 'INew'",
+        },
+      ],
+    },
+    {
+      code: "function IItemsExtra () {}",
+      output: "function INewExtra () {}",
+      options: ruleOptions,
+      errors: [
+        {
+          message: "not use 'IItems', 'IItems' use 'INew'",
+        },
+      ],
+    },
   ],
 });
-
-console.log("All tests passed!");

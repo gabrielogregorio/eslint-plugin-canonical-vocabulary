@@ -11,9 +11,9 @@ This ESLint plugin helps developers maintain a consistent vocabulary in their co
 1. First, you need to install eslint-plugin-canonical-vocabulary as a dev-dependency. You can do this using your preferred package manager:
 
 ```bash
-npm install --save-dev eslint-plugin-spellcheck
-yarn add --save-dev eslint-plugin-spellcheck
-pnpm i --save-dev eslint-plugin-spellcheck
+npm install --save-dev eslint-plugin-canonical-vocabulary
+yarn add --save-dev eslint-plugin-canonical-vocabulary
+pnpm i --save-dev eslint-plugin-canonical-vocabulary
 ```
 
 2. Next, integrate the plugin into your ESLint configuration:

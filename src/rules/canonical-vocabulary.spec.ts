@@ -1,5 +1,5 @@
 const { RuleTester } = require("eslint");
-const noDisallowedTermsRule = require("./no-disallowed-terms");
+const noDisallowedTermsRule = require("./canonical-vocabulary");
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2015 },
@@ -20,7 +20,7 @@ const ruleOptions = [
   ],
 ];
 
-ruleTester.run("no-disallowed-terms", noDisallowedTermsRule, {
+ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
   valid: [
     {
       code: "const FinancialInstitution = '';",

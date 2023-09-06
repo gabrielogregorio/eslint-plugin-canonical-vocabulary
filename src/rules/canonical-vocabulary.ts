@@ -1,8 +1,30 @@
-const formatMessage = (messageLocal, word, fixTo) => {
+interface RuleOption {
+  message: string;
+  fixTo: string;
+  words: string[];
+}
+
+const formatMessage = (
+  messageLocal: string,
+  word: string,
+  fixTo: string
+): string => {
   return messageLocal.replace("<word>", word).replace("<fixTo>", fixTo);
 };
 
-const sendReport = (context, node, message, banWorld, fixTo) => {
+const sendReport = (
+  context: {
+    report: (arg0: {
+      node: any;
+      message: string;
+      fix(fixer: any): any;
+    }) => void;
+  },
+  node: { id: { name: string } },
+  message: string,
+  banWorld: string,
+  fixTo: string
+) => {
   context.report({
     node,
     message: formatMessage(message, banWorld, fixTo),
@@ -12,13 +34,18 @@ const sendReport = (context, node, message, banWorld, fixTo) => {
   });
 };
 
-const findInvalidName = (options, nameVar, context, node) => {
-  options.forEach((option) => {
+const findInvalidName = (
+  options: { words: any; fixTo: any; message: any }[],
+  nameVar: string,
+  context: any,
+  node: any
+) => {
+  options.forEach((option: { words: any; fixTo: any; message: any }) => {
     const banWorlds = option.words;
     const fixTo = option.fixTo;
     const message = option.message;
 
-    const banWorldFounded = banWorlds.find((banWord) =>
+    const banWorldFounded = banWorlds.find((banWord: string) =>
       nameVar.toLowerCase().includes(banWord.toLowerCase())
     );
 
@@ -61,11 +88,14 @@ module.exports = {
       },
     ],
   },
-  create(context) {
-    let options = context.options[0];
+  create(context: { options: RuleOption[][] }) {
+    let options = context.options[0] as RuleOption[];
 
     return {
-      VariableDeclarator(node) {
+      VariableDeclarator(node: {
+        parent: { kind: string };
+        id: { name: any; type: any };
+      }) {
         if (["const", "let", "var"].includes(node.parent.kind)) {
           const nameVar = node.id.name;
           const identifierType = node.id.type;
@@ -76,12 +106,12 @@ module.exports = {
         }
       },
 
-      ClassDeclaration(node) {
+      ClassDeclaration(node: { id: { name: any } }) {
         const nameVar = node.id.name;
         findInvalidName(options, nameVar, context, node);
       },
 
-      FunctionDeclaration(node) {
+      FunctionDeclaration(node: { id: { name: any } }) {
         const nameVar = node.id.name;
         findInvalidName(options, nameVar, context, node);
       },

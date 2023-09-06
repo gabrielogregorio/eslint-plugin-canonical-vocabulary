@@ -3,13 +3,23 @@ const eslintPluginExample = require("./index");
 module.exports = [
   {
     files: ["**/*.js"],
+    parser: "@typescript-eslint/parser",
+    extends: ["plugin:@typescript-eslint/recommended"],
+    parserOptions: {
+      ecmaVersion: 2020,
+      sourceType: "module",
+      project: "./tsconfig.json",
+    },
     languageOptions: {
       sourceType: "commonjs",
       ecmaVersion: "latest",
     },
-    plugins: { example: eslintPluginExample },
+    plugins: {
+      example: eslintPluginExample,
+      "@typescript-eslint": "@typescript-eslint",
+    },
     rules: {
-      "example/no-disallowed-terms": [
+      "example/canonical-vocabulary": [
         "error",
         [
           {

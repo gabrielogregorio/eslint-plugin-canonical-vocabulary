@@ -1,0 +1,85 @@
+name: assign and filled label pr
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  assign_and_label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: get pr commits
+        id: pr_commits
+        run: |
+          pr_commits=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "${{ github.event.pull_request.commits_url }}")
+          echo "::set-output name=pr_commits::$pr_commits"
+
+      - name: assign user and add labels
+        uses: actions/github-script@v5
+        with:
+          script: |
+            console.log('start scripting...')
+            const commitsResponse = await github.rest.pulls.listCommits({ owner: context.repo.owner, repo: context.repo.repo, pull_number: context.issue.number });
+            const commitMessages = commitsResponse.data.map(commit => commit.commit.message.toLowerCase());
+
+            const { owner, repo, number } = context.issue;
+            const prAuthor = context.payload.pull_request.user.login;
+
+            await github.rest.issues.addAssignees({ owner, repo, issue_number: number, assignees: [prAuthor] });
+
+            console.log('handle asign labels...')
+
+            const labelsToAdd = [];
+
+            for (const message of commitMessages) {
+              if (message.includes("fix")) { labelsToAdd.push("bug"); }
+              if (message.includes("feat")) { labelsToAdd.push("feature"); }
+              if (message.includes("docs")) { labelsToAdd.push("documentation"); }
+              if (message.includes("refactor")) { labelsToAdd.push("enhancement"); }
+            }
+
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({ owner, repo, issue_number: number, labels: labelsToAdd });
+            }
+
+            console.log('handle adds resolve...')
+
+            const getActualPrBody = async () => {
+              return github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number
+              });
+            }
+
+            let updatedBody = (await getActualPrBody()).data.body;
+
+            const verifyIfNeedAddsResolve = (updatedBodyLocal) => {
+              for (const message of commitMessages) {
+                const match = message.match(/resolve #(\d+)/i);
+                if (match && !updatedBodyLocal.includes(match[0])) {
+                  updatedBodyLocal += `\n\n${match[0]}`;
+                }
+              }
+
+              return updatedBodyLocal
+            }
+
+            const newUpdatedBody = verifyIfNeedAddsResolve(updatedBody)
+
+            const updatesActualPr = async () => {
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                body: newUpdatedBody
+              });
+            }
+
+            await updatesActualPr()

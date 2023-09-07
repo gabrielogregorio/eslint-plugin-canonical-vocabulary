@@ -1,0 +1,45 @@
+name: pr validate
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - edited
+
+jobs:
+  validate_pr_title_and_body:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      
+      - name: check pr title and body
+        run: |
+          pr_title="${{ github.event.pull_request.title }}"
+          pr_body="${{ github.event.pull_request.body }}"
+          default_title="Update README.md"
+          
+          pr_template=$(cat .github/pull-request-template.md)
+
+          if [[ "$pr_title" == "$default_title" ]]; then
+            echo "error: pr title is not updated."
+            exit 1
+          fi
+
+          pr_body_cleaned=$(echo "$pr_body" | tr -d '[:space:]')
+          pr_template_cleaned=$(echo "$pr_template" | tr -d '[:space:]')
+
+          if [[ "$pr_body_cleaned" == "$pr_template_cleaned" ]]; then
+            echo "error: pr body is the same as the template."
+            exit 1
+          fi
+  
+      - name: create comment
+        if: ${{ failure() }}
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            const body = `Oi 🧑‍💻\n\nAtualiza o PR ai beleza?`;
+            await github.rest.issues.createComment({ owner, repo, issue_number: number, body });

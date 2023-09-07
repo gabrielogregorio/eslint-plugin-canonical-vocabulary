@@ -1,6 +1,6 @@
 import { RuleOption } from '../../utils/types';
 
-export const getMessageByParams = (options: RuleOption): string => {
+export const getReportMessage = (options: RuleOption): string => {
   if (options?.message) {
     return options.message;
   }

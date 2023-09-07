@@ -1,38 +1,40 @@
 import { fixBasedInCase } from '../../utils/fixBasedInCase';
 import { formatMessage } from '../../utils/formatMessage';
+import { sendEslintReport } from '../../utils/sendEslintReport';
 import { stringsAreEquivalentRegardlessOfConvention } from '../../utils/stringsAreEquivalentRegardlessOfConvention';
 import { AstNode, Context, RuleOption } from '../../utils/types';
-import { getMessageByParams } from './utils';
+import { getReportMessage } from './utils';
 
-const sendReport = (context: Context, node: AstNode, fixTo: string, message: string) => {
-  context.report({
-    node,
-    message,
-    fix(fixer) {
-      if (!fixTo) {
-        return fixer;
-      }
-      return fixer.replaceText(node.id, node.id.name.replace(node.id.name, fixTo));
-    },
+const findBannedWord = (banWorlds: string[], nameVariable: string) => {
+  let bannedWordIsInStart = false;
+
+  const bannedWord = banWorlds.find((banWord: string) => {
+    const response = stringsAreEquivalentRegardlessOfConvention(nameVariable, banWord);
+    bannedWordIsInStart = response.bannedWordIsInStart;
+    return response.equivalent;
   });
+
+  return { bannedWord, bannedWordIsInStart };
 };
 
-export const findBannedTermAndReport = (options: RuleOption[], nameVar: string, context: Context, node: AstNode) => {
+export const findBannedTermAndReport = (
+  options: RuleOption[],
+  nameVariable: string,
+  context: Context,
+  node: AstNode,
+) => {
   options.forEach((option: RuleOption) => {
     const banWorlds = option.words;
     const fixTo = option.fixTo || '';
-    const message = getMessageByParams(option);
+    const message = getReportMessage(option);
 
-    let bannedWordIsInStart = false;
-    const banWorldFounded = banWorlds.find((banWord: string) => {
-      const response = stringsAreEquivalentRegardlessOfConvention(nameVar, banWord);
-      bannedWordIsInStart = response.bannedWordIsInStart;
-      return response.equivalent;
-    });
+    const { bannedWord, bannedWordIsInStart } = findBannedWord(banWorlds, nameVariable);
 
-    if (banWorldFounded) {
-      const fixToBasedInCase = fixBasedInCase(nameVar, banWorldFounded, fixTo, bannedWordIsInStart);
-      sendReport(context, node, fixToBasedInCase, formatMessage(banWorldFounded, fixTo, message));
+    if (bannedWord) {
+      const reportMessageFormatted = formatMessage(bannedWord, fixTo, message);
+      const fixToBasedInCase = fixBasedInCase(nameVariable, bannedWord, fixTo, bannedWordIsInStart);
+
+      sendEslintReport(context, node, fixToBasedInCase, reportMessageFormatted);
     }
   });
 };

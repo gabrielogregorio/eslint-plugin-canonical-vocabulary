@@ -1,13 +1,13 @@
 import { handlerCases } from './handleCases';
 
-type availableCases = 'isUpperSnakeCase' | 'isSnakeCase' | 'isPascalCase' | 'isCamelCase';
+type caseDetectedType = 'isUpperSnakeCase' | 'isSnakeCase' | 'isPascalCase' | 'isCamelCase';
 
-const discoveryCase = (phraseInAnyCase: string): availableCases => {
+const detectCase = (phraseInAnyCase: string): caseDetectedType => {
   if (handlerCases.isUpperSnakeCase(phraseInAnyCase)) {
     return 'isUpperSnakeCase';
   }
 
-  if (handlerCases.isSnakeCase(phraseInAnyCase)) {
+  if (handlerCases.isSnakeCase(phraseInAnyCase) && phraseInAnyCase.includes('_')) {
     return 'isSnakeCase';
   }
 
@@ -18,7 +18,7 @@ const discoveryCase = (phraseInAnyCase: string): availableCases => {
   return 'isCamelCase';
 };
 
-const convertBasedInCase = (phrase: string, cases: availableCases, targetBannedWordIsInStart: boolean) => {
+const applyCase = (phrase: string, cases: caseDetectedType, bannedWordIsInStart: boolean) => {
   if (cases === 'isUpperSnakeCase') {
     return handlerCases.toUpperSnakeCase(phrase);
   }
@@ -31,9 +31,11 @@ const convertBasedInCase = (phrase: string, cases: availableCases, targetBannedW
     return handlerCases.toPascalCase(phrase);
   }
 
-  if (!targetBannedWordIsInStart) {
+  const isCamelCaseButNoIsInStart = !bannedWordIsInStart;
+  if (isCamelCaseButNoIsInStart) {
     return handlerCases.toPascalCase(phrase);
   }
+
   return handlerCases.toCamelCase(phrase);
 };
 
@@ -41,11 +43,11 @@ export const fixBasedInCase = (
   phraseInAnyCase: string,
   wordTargetInAnyCase: string,
   fixToInAnyCase: string,
-  targetBannedWordIsInStart: boolean,
+  bannedWordIsInStart: boolean,
 ): string => {
-  const phraseCase = discoveryCase(phraseInAnyCase);
-  const wordTarge = convertBasedInCase(wordTargetInAnyCase, phraseCase, targetBannedWordIsInStart);
-  const fixToInAnyCaseInCase = convertBasedInCase(fixToInAnyCase, phraseCase, targetBannedWordIsInStart);
+  const caseDetected = detectCase(phraseInAnyCase);
+  const wordInCase = applyCase(wordTargetInAnyCase, caseDetected, bannedWordIsInStart);
+  const fixToInCase = applyCase(fixToInAnyCase, caseDetected, bannedWordIsInStart);
 
-  return phraseInAnyCase.replace(wordTarge, fixToInAnyCaseInCase);
+  return phraseInAnyCase.replace(wordInCase, fixToInCase);
 };

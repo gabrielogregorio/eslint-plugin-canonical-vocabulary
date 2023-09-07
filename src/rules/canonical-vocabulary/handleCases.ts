@@ -4,26 +4,26 @@ export const handlerCases = {
   },
 
   toCamelCase: (text: string): string => {
-    let textToAnalisis = text;
-    if (handlerCases.isUpperSnakeCase(textToAnalisis)) {
-      textToAnalisis = textToAnalisis.toLowerCase();
+    let textToAnalysis = text;
+    if (handlerCases.isUpperSnakeCase(textToAnalysis)) {
+      textToAnalysis = textToAnalysis.toLowerCase();
     }
 
-    if (handlerCases.isPascalCase(textToAnalisis)) {
-      textToAnalisis = textToAnalisis[0].toLowerCase() + textToAnalisis.slice(1);
+    if (handlerCases.isPascalCase(textToAnalysis)) {
+      textToAnalysis = textToAnalysis[0].toLowerCase() + textToAnalysis.slice(1);
     }
 
-    return textToAnalisis.replace(/([-_]\w)/g, (g) => {
+    return textToAnalysis.replace(/([-_]\w)/g, (g) => {
       return g[1].toUpperCase();
     });
   },
 
   toPascalCase: (text: string): string => {
-    let textToAnalisis = text;
-    if (handlerCases.isUpperSnakeCase(textToAnalisis)) {
-      textToAnalisis = textToAnalisis.toLowerCase();
+    let textToAnalysis = text;
+    if (handlerCases.isUpperSnakeCase(textToAnalysis)) {
+      textToAnalysis = textToAnalysis.toLowerCase();
     }
-    return textToAnalisis.replace(/(^\w|[-_]\w)/g, (g) => {
+    return textToAnalysis.replace(/(^\w|[-_]\w)/g, (g) => {
       return g.replace(/[-_]/, '').toUpperCase();
     });
   },
@@ -36,12 +36,12 @@ export const handlerCases = {
     return /^[a-z]+(_[a-z]+)*$/.test(text);
   },
   toSnakeCase: (text: string): string => {
-    let textToAnalisis = text;
-    if (handlerCases.isUpperSnakeCase(textToAnalisis)) {
-      textToAnalisis = textToAnalisis.toLowerCase();
+    let textToAnalysis = text;
+    if (handlerCases.isUpperSnakeCase(textToAnalysis)) {
+      textToAnalysis = textToAnalysis.toLowerCase();
     }
 
-    return textToAnalisis.replace(/(?:[A-Z])/g, (g) => '_' + g.toLowerCase()).replace(/^_/, '');
+    return textToAnalysis.replace(/(?:[A-Z])/g, (g) => '_' + g.toLowerCase()).replace(/^_/, '');
   },
 
   isUpperSnakeCase: (text: string): boolean => {

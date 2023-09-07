@@ -1,5 +1,5 @@
-import { fixBasedInCase } from '../../utils/fixBasedInCase';
-import { formatMessage } from '../../utils/formatMessage';
+import { fixBasedInCase } from './fixBasedInCase';
+import { formatMessage } from './formatMessage';
 import { sendEslintReport } from '../../utils/sendEslintReport';
 import { stringsAreEquivalent } from '../../utils/stringsAreEquivalent';
 import { AstNode, Context, RuleOption } from '../../utils/types';

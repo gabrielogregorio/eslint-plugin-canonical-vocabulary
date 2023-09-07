@@ -1,3 +1,3 @@
 module.exports = {
-  rules: { "canonical-vocabulary": require("./rules/canonical-vocabulary") },
+  rules: { 'canonical-vocabulary': require('./rules/canonical-vocabulary/index') },
 };

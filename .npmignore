@@ -12,3 +12,5 @@ babel.config.js
 jest.config.js
 CONTRIBUTING.md
 CODE-OF-CONDUCT.md
+.prettierignore
+.prettierrc

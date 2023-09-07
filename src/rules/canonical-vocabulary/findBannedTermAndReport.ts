@@ -1,7 +1,7 @@
 import { fixBasedInCase } from '../../utils/fixBasedInCase';
 import { formatMessage } from '../../utils/formatMessage';
 import { sendEslintReport } from '../../utils/sendEslintReport';
-import { stringsAreEquivalentRegardlessOfConvention } from '../../utils/stringsAreEquivalentRegardlessOfConvention';
+import { stringsAreEquivalent } from '../../utils/stringsAreEquivalent';
 import { AstNode, Context, RuleOption } from '../../utils/types';
 import { getReportMessage } from './utils';
 
@@ -9,9 +9,9 @@ const findBannedWord = (banWorlds: string[], nameVariable: string) => {
   let bannedWordIsInStart = false;
 
   const bannedWord = banWorlds.find((banWord: string) => {
-    const response = stringsAreEquivalentRegardlessOfConvention(nameVariable, banWord);
+    const response = stringsAreEquivalent(nameVariable, banWord);
     bannedWordIsInStart = response.bannedWordIsInStart;
-    return response.equivalent;
+    return response.isEquivalent;
   });
 
   return { bannedWord, bannedWordIsInStart };

@@ -27,7 +27,7 @@ const ruleOptions = [
       fixTo: 'delta',
     },
     {
-      words: ['beta'],
+      words: ['betaHahaha'],
     },
   ],
 ];
@@ -156,14 +156,13 @@ ruleTester.run('canonical-vocabulary', noDisallowedTermsRule, {
         },
       ],
     },
-
     {
-      code: 'function BetaSauro () {}',
+      code: 'function BetaHahahaSauro () {}',
       output: 'function Sauro () {}',
       options: ruleOptions,
       errors: [
         {
-          message: 'The term beta is not recommended',
+          message: 'The term betaHahaha is not recommended',
         },
       ],
     },

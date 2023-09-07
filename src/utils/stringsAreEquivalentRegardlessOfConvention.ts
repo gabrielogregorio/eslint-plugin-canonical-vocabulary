@@ -3,14 +3,14 @@ const formatToSimpleStrings = (frase: string): string => {
 };
 
 export const stringsAreEquivalentRegardlessOfConvention = (
-  pharse: string,
+  phrase: string,
   word: string
-): { equivalent: boolean; isInStart: boolean } => {
-  const pharseFormated = formatToSimpleStrings(pharse);
+): { equivalent: boolean; bannedWordIsInStart: boolean } => {
+  const phraseFormatted = formatToSimpleStrings(phrase);
   const wordFormatted = formatToSimpleStrings(word);
 
   return {
-    isInStart: pharseFormated.startsWith(wordFormatted),
-    equivalent: pharseFormated.includes(wordFormatted),
+    bannedWordIsInStart: phraseFormatted.startsWith(wordFormatted),
+    equivalent: phraseFormatted.includes(wordFormatted),
   };
 };

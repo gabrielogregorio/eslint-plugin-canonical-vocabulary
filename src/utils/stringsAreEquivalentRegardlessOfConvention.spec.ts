@@ -2,66 +2,66 @@ import { stringsAreEquivalentRegardlessOfConvention } from "./stringsAreEquivale
 
 describe("stringsAreEquivalentRegardlessOfConvention", () => {
   it("should check that regardless of convention, the strings are equivalent 1", () => {
-    const pharse = "thisNotExistsOk";
+    const phrase = "thisNotExistsOk";
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "not_exists")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "not_exists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "notexists")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "notexists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "Notexists")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "Notexists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "NotExists")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "NotExists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "NotExistS")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "NotExistS")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "NOT_EXISTS")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "NOT_EXISTS")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
   });
 
   it("should check that regardless of convention, the strings are equivalent 1", () => {
-    const pharse = "THIS NOT_EXISTS";
+    const phrase = "THIS NOT_EXISTS";
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "not_exists")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "not_exists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "notexists")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "notexists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "Notexists")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "Notexists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "NotExists")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "NotExists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "NotExistS")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "NotExistS")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "NOT_EXISTS")
-    ).toEqual({ equivalent: true, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "NOT_EXISTS")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: false });
   });
 
   it("should check that regardless of convention, the strings are equivalent 1", () => {
-    const pharse = "NOT_EXISTS_THIS";
+    const phrase = "NOT_EXISTS_THIS";
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "not_exists")
-    ).toEqual({ equivalent: true, isInStart: true });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "not_exists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: true });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "notexists")
-    ).toEqual({ equivalent: true, isInStart: true });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "notexists")
+    ).toEqual({ equivalent: true, bannedWordIsInStart: true });
   });
 
   it("should return false because strings are different", () => {
-    const pharse = "thisNotExistz";
+    const phrase = "thisNotExistz";
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "not_exists")
-    ).toEqual({ equivalent: false, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "not_exists")
+    ).toEqual({ equivalent: false, bannedWordIsInStart: false });
     expect(
-      stringsAreEquivalentRegardlessOfConvention(pharse, "notexists")
-    ).toEqual({ equivalent: false, isInStart: false });
+      stringsAreEquivalentRegardlessOfConvention(phrase, "notexists")
+    ).toEqual({ equivalent: false, bannedWordIsInStart: false });
   });
 });

@@ -2,10 +2,19 @@ import { fixBasedInCase } from "../utils/fixBasedInCase";
 import { stringsAreEquivalentRegardlessOfConvention } from "../utils/stringsAreEquivalentRegardlessOfConvention";
 
 interface RuleOption {
-  message: string;
-  fixTo: string;
+  message?: string;
+  fixTo?: string;
   words: string[];
 }
+
+type AstNode = {
+  parent: { kind: string };
+  id: { name: string; type: string };
+};
+type Context = {
+  options: RuleOption[][];
+  report: (arg0: { node: any; message: string; fix(fixer: any): any }) => void;
+};
 
 const formatMessage = (
   word: string,
@@ -16,14 +25,8 @@ const formatMessage = (
 };
 
 const sendReport = (
-  context: {
-    report: (arg0: {
-      node: any;
-      message: string;
-      fix(fixer: any): any;
-    }) => void;
-  },
-  node: { id: { name: string } },
+  context: Context,
+  node: AstNode,
   banWorld: string,
   fixToRef: string,
   fixTo: string,
@@ -44,12 +47,12 @@ const sendReport = (
   });
 };
 
-const getMessageByParams = (fixTo: string, message: string): string => {
-  if (message) {
-    return message;
+const getMessageByParams = (options: RuleOption): string => {
+  if (options?.message) {
+    return options.message;
   }
 
-  if (!fixTo) {
+  if (!options.fixTo) {
     return "The term <word> is not recommended";
   }
 
@@ -57,24 +60,24 @@ const getMessageByParams = (fixTo: string, message: string): string => {
 };
 
 const findInvalidName = (
-  options: { words: any; fixTo: any; message: any }[],
+  options: RuleOption[],
   nameVar: string,
-  context: any,
-  node: any
+  context: Context,
+  node: AstNode
 ) => {
-  options.forEach((option: { words: any; fixTo: any; message: any }) => {
+  options.forEach((option: RuleOption) => {
     const banWorlds = option.words;
     const fixTo = option.fixTo || "";
-    const message = getMessageByParams(fixTo, option.message);
+    const message = getMessageByParams(option);
 
-    let isInStart = false;
+    let bannedWordIsInStart = false;
 
     const banWorldFounded = banWorlds.find((banWord: string) => {
       const response = stringsAreEquivalentRegardlessOfConvention(
         nameVar,
         banWord
       );
-      isInStart = response.isInStart;
+      bannedWordIsInStart = response.bannedWordIsInStart;
       return response.equivalent;
     });
 
@@ -83,7 +86,7 @@ const findInvalidName = (
         nameVar,
         banWorldFounded,
         fixTo,
-        isInStart
+        bannedWordIsInStart
       );
       sendReport(
         context,
@@ -102,7 +105,7 @@ module.exports = {
     type: "problem",
     docs: {
       description:
-        "Padroniza escrita de código, banindo e recomendando certos padrões",
+        "This ESLint plugin helps developers maintain a consistent vocabulary in their code. By defining canonical terms, developers can ensure that their codebase remains coherent and understandable.",
     },
     fixable: "code",
     schema: [
@@ -129,32 +132,27 @@ module.exports = {
       },
     ],
   },
-  create(context: { options: RuleOption[][] }) {
-    let options = context.options[0] as RuleOption[];
+
+  create(context: Context) {
+    let options = context.options[0];
 
     return {
-      VariableDeclarator(node: {
-        parent: { kind: string };
-        id: { name: any; type: any };
-      }) {
+      VariableDeclarator(node: AstNode) {
         if (["const", "let", "var"].includes(node.parent.kind)) {
-          const nameVar = node.id.name;
-          const identifierType = node.id.type;
+          const name = node.id.name;
 
-          if (identifierType === "Identifier") {
-            findInvalidName(options, nameVar, context, node);
+          if (node.id.type === "Identifier") {
+            findInvalidName(options, name, context, node);
           }
         }
       },
 
-      ClassDeclaration(node: { id: { name: any } }) {
-        const nameVar = node.id.name;
-        findInvalidName(options, nameVar, context, node);
+      ClassDeclaration(node: AstNode) {
+        findInvalidName(options, node.id.name, context, node);
       },
 
-      FunctionDeclaration(node: { id: { name: any } }) {
-        const nameVar = node.id.name;
-        findInvalidName(options, nameVar, context, node);
+      FunctionDeclaration(node: AstNode) {
+        findInvalidName(options, node.id.name, context, node);
       },
     };
   },

@@ -10,13 +10,9 @@ interface RuleOption {
 const formatMessage = (
   word: string,
   fixTo: string,
-  messageLocal?: string
+  messageLocal: string
 ): string => {
-  return (
-    messageLocal || "The term <word> is not recommended, use the term <fixTo>"
-  )
-    .replace(/<word>/g, word)
-    .replace(/<fixTo>/g, fixTo);
+  return messageLocal.replace(/<word>/g, word).replace(/<fixTo>/g, fixTo);
 };
 
 const sendReport = (
@@ -31,18 +27,33 @@ const sendReport = (
   banWorld: string,
   fixToRef: string,
   fixTo: string,
-  message?: string
+  message: string
 ) => {
   context.report({
     node,
     message: formatMessage(banWorld, fixToRef, message),
     fix(fixer) {
+      if (!fixTo) {
+        return fixer;
+      }
       return fixer.replaceText(
         node.id,
         node.id.name.replace(node.id.name, fixTo)
       );
     },
   });
+};
+
+const getMessageByParams = (fixTo: string, message: string): string => {
+  if (message) {
+    return message;
+  }
+
+  if (!fixTo) {
+    return "The term <word> is not recommended";
+  }
+
+  return "The term <word> is not recommended, use the term <fixTo>";
 };
 
 const findInvalidName = (
@@ -53,8 +64,8 @@ const findInvalidName = (
 ) => {
   options.forEach((option: { words: any; fixTo: any; message: any }) => {
     const banWorlds = option.words;
-    const fixTo = option.fixTo;
-    const message = option.message;
+    const fixTo = option.fixTo || "";
+    const message = getMessageByParams(fixTo, option.message);
 
     let isInStart = false;
 

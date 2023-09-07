@@ -26,6 +26,9 @@ const ruleOptions = [
       words: ["alfa"],
       fixTo: "delta",
     },
+    {
+      words: ["beta"],
+    },
   ],
 ];
 
@@ -150,6 +153,17 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       errors: [
         {
           message: "The term alfa is not recommended, use the term delta",
+        },
+      ],
+    },
+
+    {
+      code: "function BetaSauro () {}",
+      output: "function Sauro () {}",
+      options: ruleOptions,
+      errors: [
+        {
+          message: "The term beta is not recommended",
         },
       ],
     },

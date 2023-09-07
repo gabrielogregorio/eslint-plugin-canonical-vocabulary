@@ -8,11 +8,15 @@ interface RuleOption {
 }
 
 const formatMessage = (
-  messageLocal: string,
   word: string,
-  fixTo: string
+  fixTo: string,
+  messageLocal?: string
 ): string => {
-  return messageLocal.replace(/<word>/g, word).replace(/<fixTo>/g, fixTo);
+  return (
+    messageLocal || "The term <word> is not recommended, use the term <fixTo>"
+  )
+    .replace(/<word>/g, word)
+    .replace(/<fixTo>/g, fixTo);
 };
 
 const sendReport = (
@@ -24,14 +28,14 @@ const sendReport = (
     }) => void;
   },
   node: { id: { name: string } },
-  message: string,
   banWorld: string,
   fixToRef: string,
-  fixTo: string
+  fixTo: string,
+  message?: string
 ) => {
   context.report({
     node,
-    message: formatMessage(message, banWorld, fixToRef),
+    message: formatMessage(banWorld, fixToRef, message),
     fix(fixer) {
       return fixer.replaceText(
         node.id,
@@ -73,10 +77,10 @@ const findInvalidName = (
       sendReport(
         context,
         node,
-        message,
         banWorldFounded,
         fixTo,
-        fixToBasedInCase
+        fixToBasedInCase,
+        message
       );
     }
   });
@@ -101,7 +105,6 @@ module.exports = {
             },
             fixTo: {
               type: "string",
-              default: "",
             },
             words: {
               type: "array",

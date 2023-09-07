@@ -34,8 +34,7 @@ npm install eslint-plugin-canonical-vocabulary  --save-dev
         },
         {
           "words": ["EduFee", "ScholarCost", "StudyExpense"],
-          "fixTo": "TuitionFee",
-          "message": "To ensure clarity when referring to the tuition fee, it is preferable to use <fixTo>. Avoid less standard or ambiguous terms like <word>."
+          "fixTo": "TuitionFee"
         }
       ]
     ]
@@ -48,7 +47,7 @@ npm install eslint-plugin-canonical-vocabulary  --save-dev
 
 - **words** (required) A list of words and terms you want to avoid
 - **fixTo** (required) The word or term you recommend should be used
-- **message** (required) A message with the motivations regarding the decision, you can use the syntax of <word>
+- **message** (optional) A message with the motivations regarding the decision, you can use the syntax of <word>
 
 4. You can configure the severity of the rule as "error", "warn", or "off" based on your project's requirements.
 

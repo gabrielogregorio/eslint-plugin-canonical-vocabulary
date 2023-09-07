@@ -22,6 +22,10 @@ const ruleOptions = [
       fixTo: "INew",
       message: "not use '<word>', '<word>' use '<fixTo>'",
     },
+    {
+      words: ["alfa"],
+      fixTo: "delta",
+    },
   ],
 ];
 
@@ -136,6 +140,16 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       errors: [
         {
           message: "not use 'IItems', 'IItems' use 'INew'",
+        },
+      ],
+    },
+    {
+      code: "function Alfa () {}",
+      output: "function Delta () {}",
+      options: ruleOptions,
+      errors: [
+        {
+          message: "The term alfa is not recommended, use the term delta",
         },
       ],
     },

@@ -1,10 +1,10 @@
 const formatToSimpleStrings = (frase: string): string => {
-  return frase.replace(/_/g, "").toLowerCase().trim();
+  return frase.replace(/_/g, '').toLowerCase().trim();
 };
 
 export const stringsAreEquivalentRegardlessOfConvention = (
   phrase: string,
-  word: string
+  word: string,
 ): { equivalent: boolean; bannedWordIsInStart: boolean } => {
   const phraseFormatted = formatToSimpleStrings(phrase);
   const wordFormatted = formatToSimpleStrings(word);

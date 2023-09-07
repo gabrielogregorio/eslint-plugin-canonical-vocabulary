@@ -1,5 +1,5 @@
-const { RuleTester } = require("eslint");
-const noDisallowedTermsRule = require("./canonical-vocabulary");
+const { RuleTester } = require('eslint');
+const noDisallowedTermsRule = require('./canonical-vocabulary');
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2015 },
@@ -8,31 +8,31 @@ const ruleTester = new RuleTester({
 const ruleOptions = [
   [
     {
-      words: ["MoneyHolder", "RiverSide", "SavingsPlace"],
-      fixTo: "FinancialInstitution",
+      words: ['MoneyHolder', 'RiverSide', 'SavingsPlace'],
+      fixTo: 'FinancialInstitution',
       message: "not use '<word>' use '<fixTo>'",
     },
     {
-      words: ["INo"],
-      fixTo: "IYes",
+      words: ['INo'],
+      fixTo: 'IYes',
       message: "not use '<word>' use '<fixTo>'",
     },
     {
-      words: ["IItems"],
-      fixTo: "INew",
+      words: ['IItems'],
+      fixTo: 'INew',
       message: "not use '<word>', '<word>' use '<fixTo>'",
     },
     {
-      words: ["alfa"],
-      fixTo: "delta",
+      words: ['alfa'],
+      fixTo: 'delta',
     },
     {
-      words: ["beta"],
+      words: ['beta'],
     },
   ],
 ];
 
-ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
+ruleTester.run('canonical-vocabulary', noDisallowedTermsRule, {
   valid: [
     {
       code: "const FinancialInstitution = '';",
@@ -47,11 +47,11 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       options: ruleOptions,
     },
     {
-      code: "class FinancialInstitution {}",
+      code: 'class FinancialInstitution {}',
       options: ruleOptions,
     },
     {
-      code: "function FinancialInstitution () {}",
+      code: 'function FinancialInstitution () {}',
       options: ruleOptions,
     },
   ],
@@ -67,8 +67,8 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "const RiverSide = 1234;",
-      output: "const FinancialInstitution = 1234;",
+      code: 'const RiverSide = 1234;',
+      output: 'const FinancialInstitution = 1234;',
       options: ruleOptions,
       errors: [
         {
@@ -77,8 +77,8 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "let AbcSavingsPlaceTest = false;",
-      output: "let AbcFinancialInstitutionTest = false;",
+      code: 'let AbcSavingsPlaceTest = false;',
+      output: 'let AbcFinancialInstitutionTest = false;',
       options: ruleOptions,
       errors: [
         {
@@ -87,8 +87,8 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "let INo = false;",
-      output: "let IYes = false;",
+      code: 'let INo = false;',
+      output: 'let IYes = false;',
       options: ruleOptions,
       errors: [
         {
@@ -97,8 +97,8 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "class INo {}",
-      output: "class IYes {}",
+      code: 'class INo {}',
+      output: 'class IYes {}',
       options: ruleOptions,
       errors: [
         {
@@ -107,8 +107,8 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "function INo () {}",
-      output: "function IYes () {}",
+      code: 'function INo () {}',
+      output: 'function IYes () {}',
       options: ruleOptions,
       errors: [
         {
@@ -117,8 +117,8 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "function IItems () {}",
-      output: "function INew () {}",
+      code: 'function IItems () {}',
+      output: 'function INew () {}',
       options: ruleOptions,
       errors: [
         {
@@ -127,8 +127,8 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "function extra_i_items_extra () {}",
-      output: "function extra_i_new_extra () {}",
+      code: 'function extra_i_items_extra () {}',
+      output: 'function extra_i_new_extra () {}',
       options: ruleOptions,
       errors: [
         {
@@ -137,8 +137,8 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "function IItemsExtra () {}",
-      output: "function INewExtra () {}",
+      code: 'function IItemsExtra () {}',
+      output: 'function INewExtra () {}',
       options: ruleOptions,
       errors: [
         {
@@ -147,23 +147,23 @@ ruleTester.run("canonical-vocabulary", noDisallowedTermsRule, {
       ],
     },
     {
-      code: "function Alfa () {}",
-      output: "function Delta () {}",
+      code: 'function Alfa () {}',
+      output: 'function Delta () {}',
       options: ruleOptions,
       errors: [
         {
-          message: "The term alfa is not recommended, use the term delta",
+          message: 'The term alfa is not recommended, use the term delta',
         },
       ],
     },
 
     {
-      code: "function BetaSauro () {}",
-      output: "function Sauro () {}",
+      code: 'function BetaSauro () {}',
+      output: 'function Sauro () {}',
       options: ruleOptions,
       errors: [
         {
-          message: "The term beta is not recommended",
+          message: 'The term beta is not recommended',
         },
       ],
     },

@@ -10,8 +10,7 @@ export const handlerCases = {
     }
 
     if (handlerCases.isPascalCase(textToAnalisis)) {
-      textToAnalisis =
-        textToAnalisis[0].toLowerCase() + textToAnalisis.slice(1);
+      textToAnalisis = textToAnalisis[0].toLowerCase() + textToAnalisis.slice(1);
     }
 
     return textToAnalisis.replace(/([-_]\w)/g, (g) => {
@@ -25,7 +24,7 @@ export const handlerCases = {
       textToAnalisis = textToAnalisis.toLowerCase();
     }
     return textToAnalisis.replace(/(^\w|[-_]\w)/g, (g) => {
-      return g.replace(/[-_]/, "").toUpperCase();
+      return g.replace(/[-_]/, '').toUpperCase();
     });
   },
 
@@ -42,9 +41,7 @@ export const handlerCases = {
       textToAnalisis = textToAnalisis.toLowerCase();
     }
 
-    return textToAnalisis
-      .replace(/(?:[A-Z])/g, (g) => "_" + g.toLowerCase())
-      .replace(/^_/, "");
+    return textToAnalisis.replace(/(?:[A-Z])/g, (g) => '_' + g.toLowerCase()).replace(/^_/, '');
   },
 
   isUpperSnakeCase: (text: string): boolean => {
@@ -56,10 +53,10 @@ export const handlerCases = {
       return text;
     }
 
-    let result = text.replace(/([A-Z])/g, "_$1");
+    let result = text.replace(/([A-Z])/g, '_$1');
 
     result = result.toUpperCase();
 
-    return result.charAt(0) === "_" ? result.slice(1) : result;
+    return result.charAt(0) === '_' ? result.slice(1) : result;
   },
 };

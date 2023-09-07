@@ -1,41 +1,33 @@
-import { handlerCases } from "./handleCases";
+import { handlerCases } from './handleCases';
 
-type availableCases =
-  | "isUpperSnakeCase"
-  | "isSnakeCase"
-  | "isPascalCase"
-  | "isCamelCase";
+type availableCases = 'isUpperSnakeCase' | 'isSnakeCase' | 'isPascalCase' | 'isCamelCase';
 
 const discoveryCase = (phraseInAnyCase: string): availableCases => {
   if (handlerCases.isUpperSnakeCase(phraseInAnyCase)) {
-    return "isUpperSnakeCase";
+    return 'isUpperSnakeCase';
   }
 
   if (handlerCases.isSnakeCase(phraseInAnyCase)) {
-    return "isSnakeCase";
+    return 'isSnakeCase';
   }
 
   if (handlerCases.isPascalCase(phraseInAnyCase)) {
-    return "isPascalCase";
+    return 'isPascalCase';
   }
 
-  return "isCamelCase";
+  return 'isCamelCase';
 };
 
-const convertBasedInCase = (
-  phrase: string,
-  cases: availableCases,
-  targetBannedWordIsInStart: boolean
-) => {
-  if (cases === "isUpperSnakeCase") {
+const convertBasedInCase = (phrase: string, cases: availableCases, targetBannedWordIsInStart: boolean) => {
+  if (cases === 'isUpperSnakeCase') {
     return handlerCases.toUpperSnakeCase(phrase);
   }
 
-  if (cases === "isSnakeCase") {
+  if (cases === 'isSnakeCase') {
     return handlerCases.toSnakeCase(phrase);
   }
 
-  if (cases === "isPascalCase") {
+  if (cases === 'isPascalCase') {
     return handlerCases.toPascalCase(phrase);
   }
 
@@ -49,19 +41,11 @@ export const fixBasedInCase = (
   phraseInAnyCase: string,
   wordTargetInAnyCase: string,
   fixToInAnyCase: string,
-  targetBannedWordIsInStart: boolean
+  targetBannedWordIsInStart: boolean,
 ): string => {
   const phraseCase = discoveryCase(phraseInAnyCase);
-  const wordTarge = convertBasedInCase(
-    wordTargetInAnyCase,
-    phraseCase,
-    targetBannedWordIsInStart
-  );
-  const fixToInAnyCaseInCase = convertBasedInCase(
-    fixToInAnyCase,
-    phraseCase,
-    targetBannedWordIsInStart
-  );
+  const wordTarge = convertBasedInCase(wordTargetInAnyCase, phraseCase, targetBannedWordIsInStart);
+  const fixToInAnyCaseInCase = convertBasedInCase(fixToInAnyCase, phraseCase, targetBannedWordIsInStart);
 
   return phraseInAnyCase.replace(wordTarge, fixToInAnyCaseInCase);
 };

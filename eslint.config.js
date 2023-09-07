@@ -4,7 +4,7 @@ module.exports = [
   {
     files: ["**/*.js"],
     parser: "@typescript-eslint/parser",
-    extends: ["plugin:@typescript-eslint/recommended"],
+    extends: ["plugin:@typescript-eslint/recommended",  "prettier",],
     parserOptions: {
       ecmaVersion: 2020,
       sourceType: "module",

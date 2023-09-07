@@ -1,5 +1,6 @@
-import { fixBasedInCase } from "../utils/fixBasedInCase";
-import { stringsAreEquivalentRegardlessOfConvention } from "../utils/stringsAreEquivalentRegardlessOfConvention";
+import { fixBasedInCase } from '../utils/fixBasedInCase';
+import { formatMessage } from '../utils/formatMessage';
+import { stringsAreEquivalentRegardlessOfConvention } from '../utils/stringsAreEquivalentRegardlessOfConvention';
 
 interface RuleOption {
   message?: string;
@@ -13,15 +14,7 @@ type AstNode = {
 };
 type Context = {
   options: RuleOption[][];
-  report: (arg0: { node: any; message: string; fix(fixer: any): any }) => void;
-};
-
-const formatMessage = (
-  word: string,
-  fixTo: string,
-  messageLocal: string
-): string => {
-  return messageLocal.replace(/<word>/g, word).replace(/<fixTo>/g, fixTo);
+  report: (arg0: { node: AstNode; message: string; fix(fixer: any): any }) => void;
 };
 
 const sendReport = (
@@ -30,7 +23,7 @@ const sendReport = (
   banWorld: string,
   fixToRef: string,
   fixTo: string,
-  message: string
+  message: string,
 ) => {
   context.report({
     node,
@@ -39,10 +32,7 @@ const sendReport = (
       if (!fixTo) {
         return fixer;
       }
-      return fixer.replaceText(
-        node.id,
-        node.id.name.replace(node.id.name, fixTo)
-      );
+      return fixer.replaceText(node.id, node.id.name.replace(node.id.name, fixTo));
     },
   });
 };
@@ -53,77 +43,57 @@ const getMessageByParams = (options: RuleOption): string => {
   }
 
   if (!options.fixTo) {
-    return "The term <word> is not recommended";
+    return 'The term <word> is not recommended';
   }
 
-  return "The term <word> is not recommended, use the term <fixTo>";
+  return 'The term <word> is not recommended, use the term <fixTo>';
 };
 
-const findInvalidName = (
-  options: RuleOption[],
-  nameVar: string,
-  context: Context,
-  node: AstNode
-) => {
+const findInvalidName = (options: RuleOption[], nameVar: string, context: Context, node: AstNode) => {
   options.forEach((option: RuleOption) => {
     const banWorlds = option.words;
-    const fixTo = option.fixTo || "";
+    const fixTo = option.fixTo || '';
     const message = getMessageByParams(option);
 
     let bannedWordIsInStart = false;
 
     const banWorldFounded = banWorlds.find((banWord: string) => {
-      const response = stringsAreEquivalentRegardlessOfConvention(
-        nameVar,
-        banWord
-      );
+      const response = stringsAreEquivalentRegardlessOfConvention(nameVar, banWord);
       bannedWordIsInStart = response.bannedWordIsInStart;
       return response.equivalent;
     });
 
     if (banWorldFounded) {
-      const fixToBasedInCase = fixBasedInCase(
-        nameVar,
-        banWorldFounded,
-        fixTo,
-        bannedWordIsInStart
-      );
-      sendReport(
-        context,
-        node,
-        banWorldFounded,
-        fixTo,
-        fixToBasedInCase,
-        message
-      );
+      const fixToBasedInCase = fixBasedInCase(nameVar, banWorldFounded, fixTo, bannedWordIsInStart);
+      sendReport(context, node, banWorldFounded, fixTo, fixToBasedInCase, message);
     }
   });
 };
 
 module.exports = {
   meta: {
-    type: "problem",
+    type: 'problem',
     docs: {
       description:
-        "This ESLint plugin helps developers maintain a consistent vocabulary in their code. By defining canonical terms, developers can ensure that their codebase remains coherent and understandable.",
+        'This ESLint plugin helps developers maintain a consistent vocabulary in their code. By defining canonical terms, developers can ensure that their codebase remains coherent and understandable.',
     },
-    fixable: "code",
+    fixable: 'code',
     schema: [
       {
-        type: "array",
+        type: 'array',
         items: {
-          type: "object",
+          type: 'object',
           properties: {
             message: {
-              type: "string",
+              type: 'string',
             },
             fixTo: {
-              type: "string",
+              type: 'string',
             },
             words: {
-              type: "array",
+              type: 'array',
               items: {
-                type: "string",
+                type: 'string',
               },
             },
           },
@@ -138,10 +108,10 @@ module.exports = {
 
     return {
       VariableDeclarator(node: AstNode) {
-        if (["const", "let", "var"].includes(node.parent.kind)) {
+        if (['const', 'let', 'var'].includes(node.parent.kind)) {
           const name = node.id.name;
 
-          if (node.id.type === "Identifier") {
+          if (node.id.type === 'Identifier') {
             findInvalidName(options, name, context, node);
           }
         }

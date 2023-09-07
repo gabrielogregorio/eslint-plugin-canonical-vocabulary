@@ -46,7 +46,7 @@ npm install eslint-plugin-canonical-vocabulary  --save-dev
 3. About the rule parameters
 
 - **words** (required) A list of words and terms you want to avoid
-- **fixTo** (required) The word or term you recommend should be used
+- **fixTo** (optional) The word or term you recommend should be used
 - **message** (optional) A message with the motivations regarding the decision, you can use the syntax of <word>
 
 4. You can configure the severity of the rule as "error", "warn", or "off" based on your project's requirements.

@@ -1,5 +1,5 @@
 const { RuleTester } = require('eslint');
-const noDisallowedTermsRule = require('./canonical-vocabulary');
+const noDisallowedTermsRule = require('.');
 
 const ruleTester = new RuleTester({
   parserOptions: { ecmaVersion: 2015 },

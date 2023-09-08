@@ -20,6 +20,13 @@ jobs:
           "${{ github.event.pull_request.commits_url }}")
           echo "::set-output name=pr_commits::$pr_commits"
 
+      - name: get current version
+        id: get-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $VERSION"
+          echo "TAG_VERSION=v$VERSION" >> $GITHUB_ENV
+
       - name: assign user and add labels
         uses: actions/github-script@v5
         with:
@@ -42,6 +49,7 @@ jobs:
               if (message.includes("feat")) { labelsToAdd.push("feature"); }
               if (message.includes("docs")) { labelsToAdd.push("documentation"); }
               if (message.includes("refactor")) { labelsToAdd.push("enhancement"); }
+              if (message.includes("chore")) { labelsToAdd.push("help wanted"); }
             }
 
             if (labelsToAdd.length > 0) {
@@ -61,14 +69,23 @@ jobs:
             let updatedBody = (await getActualPrBody()).data.body;
 
             const verifyIfNeedAddsResolve = (updatedBodyLocal) => {
+              if(!updatedBodyLocal.includes('[...autoGenerate]')) {
+                return updatedBodyLocal
+              }
+
+              let newContent = ''
               for (const message of commitMessages) {
-                const match = message.match(/resolve #(\d+)/i);
-                if (match && !updatedBodyLocal.includes(match[0])) {
-                  updatedBodyLocal += `\n\n${match[0]}`;
+                if (!updatedBodyLocal.includes(message)) {
+                  newContent += `- ${message}\n`;
                 }
               }
 
-              return updatedBodyLocal
+              if(newContent === '') {
+                return updatedBodyLocal
+              }
+
+              newContent = newContent + '[...autoGenerate]'              
+              return updatedBodyLocal.replace('[...autoGenerate]', newContent)
             }
 
             const newUpdatedBody = verifyIfNeedAddsResolve(updatedBody)
@@ -83,3 +100,19 @@ jobs:
             }
 
             await updatesActualPr()
+
+            // update pr title
+
+            const version = process.env.TAG_VERSION;
+
+            const currentTitle = context.payload.pull_request.title;
+            const newTitle = `Release ${version} - ${currentTitle}`;
+
+            if(!currentTitle.toLowerCase().includes('Release')) {
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.issue.number,
+                title: newTitle
+              });
+            }

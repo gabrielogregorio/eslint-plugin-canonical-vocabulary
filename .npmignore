@@ -14,3 +14,4 @@ CONTRIBUTING.md
 CODE-OF-CONDUCT.md
 .prettierignore
 .prettierrc
+*.spec.*

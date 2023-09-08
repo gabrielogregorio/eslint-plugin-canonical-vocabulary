@@ -16,6 +16,14 @@ The only requirement is that you have ESLint version 5 or higher in your project
 npm install eslint-plugin-canonical-vocabulary  --save-dev
 ```
 
+```bash
+yarn add -D eslint-plugin-canonical-vocabulary
+```
+
+```bash
+pnpm install eslint-plugin-canonical-vocabulary  --save-dev
+```
+
 2. Next, integrate the plugin into your .eslintrc.js configuration (or the respective ESLint configuration file you're using).
 
 ```js
@@ -47,7 +55,7 @@ npm install eslint-plugin-canonical-vocabulary  --save-dev
 
 - **words** (required) A list of words and terms you want to avoid
 - **fixTo** (optional) The word or term you recommend should be used
-- **message** (optional) A message with the motivations regarding the decision, you can use the syntax of <word>
+- **message** (optional) A message with the reasons for the decision, you can use the `<word>` syntax to display the found word and the `<fixTo>` syntax to display the recommended word
 
 4. You can configure the severity of the rule as "error", "warn", or "off" based on your project's requirements.
 
